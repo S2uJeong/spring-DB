@@ -60,7 +60,23 @@ implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 - `@BeforeEach` , `@AfterEach` 활용
 - `@Transational`을 테스트에 사용하면, 트랜잭션을 시작시킨 후 테스트 로직 수행 후, 롤백되도록 수행된다.
 
-### 임베디드 테스트 데이터베이스 
+### 임베디드 테스트 데이터베이스
+- 임베디드 DB용 트랜잭션 매니저 새로 생성하는 방법  
+  - 테스트용 DriverManagerDataSource 생성
+  ```java
+    @Bean
+    @Profile("test")
+    public DataSource dataSource() {
+        log.info("메모리 데이터베이스 초기화");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.h2.Driver");
+        dataSource.setUrl("jdbc:h2:mem:db;DB_CLOSE_DELAY=-1");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("");
+        return dataSource;
+    }
+    ```
+  - schema.sql : table을 생성하기 위한 파일
 
 
 ---
