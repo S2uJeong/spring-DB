@@ -1,4 +1,4 @@
-# 개요
+## 개요
 - 학습 목표
     - 해당 기술들이 왜 필요한지
     - 각 기술의 장단점이 무엇인지
@@ -10,29 +10,36 @@
         - JPA, Hibernate
         - 스프링 데이터 JPA
         - Querydsl
-## jdbc
-- 커넥션 획득
-- `statement`를 준비하고 실행
-- 결과를 반복하도록 루프를 실행
-- 커넥션/ `statement`/ `resultset` 종료
-- 트랜잭션을 다루기 위한 커넥션 동기화
-- 예외 발생 시 스프링 예외 변환기 실행
-- 단점 : 동적 sql을 해결하기 어렵다. 
-
+---
+## Jdbc Template
+- 반복작업 해결
+  - 커넥션 획득
+  - `statement`를 준비하고 실행
+  - 결과를 반복하도록 루프를 실행
+  - 커넥션/ `statement`/ `resultset` 종료
+  - 트랜잭션을 다루기 위한 커넥션 동기화
+  - 예외 발생 시 스프링 예외 변환기 실행
+- 단점 
+  - 동적 sql을 해결하기 어렵다.
+  
 ### Build Code
 ```groovy
 implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 ```
 
-### 이름 지정 파라미터 `NamedParameterJdbcTemplate`
-- 이때까진 sql문의 ? 에 바인딩 할 때, 순서에 맞게 지정을 해주어야 했다.
-- 하지만 이런 제약은 버그를 유발할 수 있기 때문에 순서에 상관 없이 가능하게 해당 기능을 사용한다. 
-- 바인딩에 사용되는 파라미터 종류
-  1. `Map`
-  2. `SqlParameterSource`
-     - `BeanPropertySqlParameterSource`
-     - `MapSqlParameterSource`
-- `BeanPropertyRowMapper` : 언더스코어 표기법을 카멜로 자동 변환해준다.
+### 기능
+- 순서 기반 파라미터 바인딩 (defalut)
+- 이름 지정 파라미터 `NamedParameterJdbcTemplate`
+  - 이때까진 sql문의 ? 에 바인딩 할 때, 순서에 맞게 지정을 해주어야 했다.
+  - 하지만 이런 제약은 버그를 유발할 수 있기 때문에 순서에 상관 없이 가능하게 해당 기능을 사용한다. 
+  - 바인딩에 사용되는 파라미터 종류
+    1. `Map`
+    2. `SqlParameterSource`
+       - `BeanPropertySqlParameterSource`
+       - `MapSqlParameterSource`
+  - `BeanPropertyRowMapper` : 언더스코어 표기법을 카멜로 자동 변환해준다.
+- `SimpleJdbcInsert` : Insert SQL 편리하게 이용하게 해줌 
+- `SimpleJdbcCall` : 스토어드 프로시저를 편리하게 호출 가능
 
 ### 동적 쿼리 - MyBatis 
 - sql을 직접 사용할 때 동적 쿼리를 쉽게 작성할 수 있다. 
