@@ -77,6 +77,8 @@ implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     }
     ```
   - schema.sql : table을 생성하기 위한 파일
+- 스프링 부트와 임베디드 모드 
+  - 스프링 부트는 데이터베이스에 대한 별다른 설정이 없으면 임베디드 데이터베이스를 사용한다. 
 
 
 ---
