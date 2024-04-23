@@ -45,6 +45,22 @@ implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 - sql을 직접 사용할 때 동적 쿼리를 쉽게 작성할 수 있다. 
 
 ---
+## 데이터베이스에 연동하는 테스트 
+- `@SpringBootTest`는 `@SpringBootApplacation`을 찾아서 설정으로 사용한다.
+
+### 테스트 원칙
+- 테스트는 다른 테스트와 격리해야 한다.
+- 테스트는 반복해서 실행할 수 있어야 한다.
+
+### 데이터베이스 분리
+- /test 폴더 안의 properties 파일에 db 연결 정보를 바꿔준다. 
+
+### 데이터 롤백 
+- 트랜잭션 시작 -> 테스트 실행 -> 트랜잭션 롤백 
+- `@BeforeEach` , `@AfterEach` 활용 
+
+
+---
 ## etc
 ### *Dto
 - 데이터를 옮기기 위한 객체 
