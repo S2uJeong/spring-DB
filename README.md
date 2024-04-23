@@ -57,7 +57,10 @@ implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
 ### 데이터 롤백 
 - 트랜잭션 시작 -> 테스트 실행 -> 트랜잭션 롤백 
-- `@BeforeEach` , `@AfterEach` 활용 
+- `@BeforeEach` , `@AfterEach` 활용
+- `@Transational`을 테스트에 사용하면, 트랜잭션을 시작시킨 후 테스트 로직 수행 후, 롤백되도록 수행된다.
+
+### 임베디드 테스트 데이터베이스 
 
 
 ---
