@@ -27,6 +27,12 @@ implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 ### 이름 지정 파라미터 `NamedParameterJdbcTemplate`
 - 이때까진 sql문의 ? 에 바인딩 할 때, 순서에 맞게 지정을 해주어야 했다.
 - 하지만 이런 제약은 버그를 유발할 수 있기 때문에 순서에 상관 없이 가능하게 해당 기능을 사용한다. 
+- 바인딩에 사용되는 파라미터 종류
+  1. `Map`
+  2. `SqlParameterSource`
+     - `BeanPropertySqlParameterSource`
+     - `MapSqlParameterSource`
+- `BeanPropertyRowMapper` : 언더스코어 표기법을 카멜로 자동 변환해준다.
 
 ### 동적 쿼리 - MyBatis 
 - sql을 직접 사용할 때 동적 쿼리를 쉽게 작성할 수 있다. 
