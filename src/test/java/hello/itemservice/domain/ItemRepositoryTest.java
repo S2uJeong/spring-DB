@@ -4,6 +4,7 @@ import hello.itemservice.repository.ItemRepository;
 import hello.itemservice.repository.ItemSearchCond;
 import hello.itemservice.repository.ItemUpdateDto;
 import hello.itemservice.repository.memory.MemoryItemRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,22 +18,14 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+@Slf4j
 @Transactional
 @SpringBootTest
 class ItemRepositoryTest {
 
     @Autowired
     ItemRepository itemRepository;
-/*
-    @Autowired
-    PlatformTransactionManager transactionManager;
-    TransactionStatus status;
 
-    @BeforeEach
-    void beforeEach() {
-         status = transactionManager.getTransaction(new DefaultTransactionDefinition());
-    }
-*/
     @AfterEach
     void afterEach() {
         //MemoryItemRepository 의 경우 제한적으로 사용
@@ -80,6 +73,7 @@ class ItemRepositoryTest {
         Item item2 = new Item("itemA-2", 20000, 20);
         Item item3 = new Item("itemB-1", 30000, 30);
 
+        log.info(">>>>>>>repository = {}", itemRepository.getClass());
         itemRepository.save(item1);
         itemRepository.save(item2);
         itemRepository.save(item3);

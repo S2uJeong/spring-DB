@@ -107,10 +107,37 @@ logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
 
 ```
 ### 기능
-- package org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration.java
+- JpaBaseConfiguration.java
   - 스프링부트가 JPA 설정 시 필요한 EntityManagerFactory , JpaTransactionManager, 데이터소스 등 다양한 설정을 자동화 해줌 
 - @Entity : JPA에 객체로 인식시킴 
   - public 이나 protected의 기본` `생성자 필수로 있어야 한다.
+- EntityManager.persist()
+  - insert문을 만들어주는 메서드 
+- Update 관련 영속성 컨텍스트 
+  - JPA는 트랜잭션이 커밋되는 시점에, 변경된 엔티티 객체가 있는지 확인한다.
+  - 특정 엔티티 객체가 변경된 경우에는 UPDATE SQL을 실행한다.
+  - 테스트의 경우 마지막에 트랜잭션이 롤백되기 때문에 (기본설정) JPA는 UPDATE SQL을 실행하지 않는다.
+  - 테스트에서 UPDATE SQL을 확인하려면 update 관련 메서드에 `@Commit`을 붙여 확인할 수 있다. 
+- JPQL 
+  - JPA가 제공하는 객체지향 쿼리 언어
+  - 주로 여러 데이터를 복잡한 조건으로 조회할 때 사용한다. 
+  - SQL이 테이블을 대상으로 한다면, JPQL은 엔티티 객체를 대상으로 SQL을 실행한다고 볼 수 있다. 
+
+### JPA 예외
+- `EntityManager`은 스프링과 관련없는 JPA 기술이므로, 예외가 발생하면 JPA 관련 예외가 터진다.
+  - `PersistenceException`과 그 하위 예외
+  - `IllegalStateException`
+  - `IllegalArgmentException`
+  ![img.png](img/JPA_예외변환_전.png)
+- JPA 예외 변환기 `PersistenceExceptionTranslator`
+  - 스프링과 JPA를 함께 사용하고 `EntityManager`를 사용하는 리포지토리단에 `@Repository`를 써주면
+  - 예외 변환 AOP 적용대상이 되며 예외가 스프링 예외로 변환한다.
+  ![img.png](img/JPA_예외변환_후.png)
+  - `EntityManagerFactoryUtils.convertJapAccessExceptionIfProssible()` : 실제 JPA 예외를 변환하는 코드 
+
+
+### 동적 쿼리 - Querydsl
+
 ---
 ## etc
 ### *Dto
@@ -141,4 +168,6 @@ logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
     }
     ```
 ### 구현체가 아닌 인터페이스로 테스트를 작성하는 기법
+- 을 사용하면 구현체가 바뀌어도 테스트를 재사용할 수 있다.
+
 
