@@ -135,9 +135,48 @@ logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
   ![img.png](img/JPA_예외변환_후.png)
   - `EntityManagerFactoryUtils.convertJapAccessExceptionIfProssible()` : 실제 JPA 예외를 변환하는 코드 
 
-
 ### 동적 쿼리 - Querydsl
 
+---
+## 스프링 데이터 JPA
+- 등장이유
+  - 다양한 데이터베이스(저장소)들의 등장
+  - 저장 하는 양식은 달라도, 결국 데이터 CRUD는 같다. 추상화하여 통합하자!
+- 기능
+  - CRUD + 쿼리(메서드 이름으로 쿼리 생성)
+  - 동일한 인터페이스
+  - 페이징 처리 
+  - 스프링 MVC에서 id 값만 넘겨도 도메인 클래스로 바인딩 
+### 주요 기능
+- 공통 인터페이스 기능 `JpaRepository`
+  - 구현체 없이 repository interface만 만들어도 실행이 되는데, 이는 동적 프록시 기술이 구현 클래스를 생성해주기 때문에 가능하다.  
+  - 사용법
+    ```java
+    public interface DomainRepository extends JpaRepository<Domain, Long> { // <엔티티, 엔티티id>
+     }
+    ```
+- 쿼리 메서드 기능 
+  - 인터페이스에 메서드만 적어두면, 메서드 이름을 분석해서 쿼리를 자동으로 만들고 실행해주는 기능 제공 
+  ```java
+  // 순수 JPA 리포지토리 : jpql 작성, 바인딩 수동 
+  public List<Member> findByUsernameAndAgeGreaterThan(String username, int age) {
+     return em.createQuery("select m from Member m where m.username = :username and m.age > :age")
+                  .setParameter("username", username)
+                  .setParameter("age", age)
+                  .getResultList();
+  }
+  // 스프링 데이터 JPA
+  public interface MemberRepository extends JpaRepository<Member, Long> {
+    List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
+  }
+  ```
+  - 직접 JPQL을 사용하고 싶으면 `@Query("")`을 이용. 해당 애노테이션이 있으면 메서드 이름으로 실행하는 규칙은 무시된다.  
+  - JPA의 네이트브 쿼리 기능을 지원하기 때문에, JPQL 대신 SQL을 직접 작성해도 된다. 
+
+### Build Code
+```groovy
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+```
 ---
 ## etc
 ### *Dto
