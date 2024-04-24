@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-//@Repository
+@Repository
 public class JpaItemRepository implements ItemRepository {
     private final EntityManager em;
 
@@ -24,14 +24,14 @@ public class JpaItemRepository implements ItemRepository {
     }
 
     @Override
-    //@Transactional
+    @Transactional
     public Item save(Item item) {
         em.persist(item); // jpa가 알아서 insert문을 만든다.
         return item;
     }
 
     @Override
-    //@Transactional
+    @Transactional
     public void update(Long itemId, ItemUpdateDto updateParam) {
         Item findItem = em.find(Item.class, itemId);
         findItem.setItemName(updateParam.getItemName());
@@ -47,7 +47,7 @@ public class JpaItemRepository implements ItemRepository {
 
     @Override
     public List<Item> findAll(ItemSearchCond cond) {
-        String jpql = "selectdsf i from Item i";
+        String jpql = "select i from Item i";
         Integer maxPrice = cond.getMaxPrice();
         String itemName = cond.getItemName();
         if (StringUtils.hasText(itemName) || maxPrice != null) {
