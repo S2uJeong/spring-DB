@@ -80,7 +80,37 @@ implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 - 스프링 부트와 임베디드 모드 
   - 스프링 부트는 데이터베이스에 대한 별다른 설정이 없으면 임베디드 데이터베이스를 사용한다. 
 
+---
+## MyBatis
+- 추후 필요하면 살펴볼것 
 
+---
+## JPA
+- 동작방식
+    - <img src="img/JPA동작.png">
+- 주요 기능
+  - 캐시 기능 : 이전에 수행했던 SQL문에 대한 정보를 불러온다.
+  - 트랜잭션을 지원하는 쓰기 지연 : 트랜잭션을 커밋할 때까지 insert SQL을 모은 뒤, JDBC BATCH SQL 기능을 사용해서 한번에 SQL 전송한다.
+  - JPA는 즉시로딩을 지원한다.
+    - 즉시 로딩 : JOIN SQL로 한번에 연관된 객체까지 미리 조회
+    - 지연 로딩 : 객체가 실제 사용될 때 로딩 
+### Build Code
+```groovy
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+```
+```properties
+#JPA log
+    # 하이버네이트가 생성하고 실행하는 SQL을 확인할 수 있다.
+logging.level.org.hibernate.SQL=DEBUG
+    # SQL에 바인딩 되는 파라미터를 확인할 수 있다.
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
+
+```
+### 기능
+- package org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration.java
+  - 스프링부트가 JPA 설정 시 필요한 EntityManagerFactory , JpaTransactionManager, 데이터소스 등 다양한 설정을 자동화 해줌 
+- @Entity : JPA에 객체로 인식시킴 
+  - public 이나 protected의 기본` `생성자 필수로 있어야 한다.
 ---
 ## etc
 ### *Dto
