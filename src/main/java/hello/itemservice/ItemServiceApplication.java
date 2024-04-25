@@ -17,7 +17,8 @@ import javax.swing.*;
 //@Import(MemoryConfig.class)
 //@Import(JdbcTemplateV1Config.class)
 //@Import(JpaConfig.class)
-@Import(SpringDataJpaConfig.class)
+//@Import(SpringDataJpaConfig.class)
+@Import(QuerydslConfig.class)
 @Slf4j
 @SpringBootApplication(scanBasePackages = "hello.itemservice.web")
 public class ItemServiceApplication {

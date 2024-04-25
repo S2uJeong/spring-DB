@@ -178,6 +178,25 @@ logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 ```
 ---
+## Querydsl
+- Query는 문자이므로 Type-check 불가능 : 실행하기 전까지는 에러를 확인할 수 없다. 
+- 이런 문제를 쿼리를 Java로 type-safe하게 개발할 수 있게 지원하는 프레임워크가 QueryDSL 
+- DSL; Domain Specific Language 도메인 특화 언어
+- APT; Annotation Processing Tool : 코드 생성기
+  - @Entity가 붙은 클래스를 조회해서 해당 클래스 코드를 읽어 Q 객체를 생성한다.
+  - 작동방식 : DSL -- 생성 --> JPQL -- 생성 --> SQL
+- 결국 QueryDSL은 JPQL 생성기이다. 이 언어를 알아야 한다. 
+- 만약 JPQL로 해결하기 어려운 복잡한 쿼리는 네이티브 SQL 쿼리 (JsbcTemplate, MyBatis 사용)
+### Build Code
+```groovy
+	implementation 'com.querydsl:querydsl-jpa'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+```
+### 주요 기능
+- JPAQueryFactory
+---
 ## etc
 ### *Dto
 - 데이터를 옮기기 위한 객체 
