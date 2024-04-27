@@ -197,6 +197,20 @@ logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
 ### 주요 기능
 - JPAQueryFactory
 ---
+## 실용적인 구조 
+- Jpa Data + QueryDSL 함께 사용하는 ServiceV2 제작
+### 그럼 트랜잭션은 어떻게 작동하지? (트랜잭션 매니저)
+- 배경
+  - JPA, 스프링 데이터 JPA, Quetydsl은 모두 JPA기술을 사용하는 것이기 때문에 트랜잭션 매니저로 `JpaTransactionManager`을 선택하며
+  - 해당 기술을 사용하면 스프링 부트는 자동으로 해당 매니저를 스프링 빈에 등록한다. 
+  - `JdbcTemplate`, `MyBatis` 기술은 내부에서 직접 JDBC를 사용하기 때문에 `DataSourceTransactionManager`을 사용한다.
+  - 그러면, 다른 매니저를 쓰는 두 기술을 함께 사용하면 트랜잭션을 어떻게 하나로 묶을 수 있을까?
+- `JpaTransactionManager`의 지원 
+  - `JpaTransactionManager`가 `DataSourceTransactionManager`가 제공하는 기능도 대부분 제공한다.
+  - JPA 기술도 결국 내부에서는 DataSource와 JDBC 커넥션을 사용하기 때문이다. 
+  - 결국 `JpaTransactionManager` 하나만 스프링 빈에 등록하면 모든 기술의 트랜잭션을 묶어서 사용할 수 있다. 
+  - JPA의 지연전략 때문에 타이밍이 어긋날 수 있는데, JPA에서 제공하는 플러시라는 기능을 이용해 해결할 수 있다.
+---
 ## etc
 ### *Dto
 - 데이터를 옮기기 위한 객체 
